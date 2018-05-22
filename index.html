@@ -6,21 +6,45 @@
     		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 		<script>
 			var socket = io();
-            socket.on('update_count', function(msg){
-                var parts = msg.split('_');
-                $('#' + parts[0]).html(parts[1]);
+			socket.on('update_round', function (msg){
+                $('#round').html(msg);
+			});
+            socket.on('update_question', function(msg){
+                $('#question').html(msg);
+            });
+            socket.on('update_timer', function(msg){
+                $('#timer').html(msg);
+            });
+            socket.on('start', function(msg){
+                document.getElementById("welcome").style.display = "none";
+                document.getElementById("game").style.display = "block";
+
+                window.addEventListener("beforeunload", function (e) {
+                    var confirmationMessage = 'You won\'t be able to stay in the current game, if you reload the page!';
+
+                    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+                    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+                });
+            });
+            socket.on('stop', function(msg){
+                document.getElementById("welcome").style.display = "block";
+                document.getElementById("game").style.display = "none";
+
+                window.removeEventListener("beforeunload");
             });
 		</script>
   	</head>
   	<body>
-		<button onclick="socket.emit('click', 'a');">A</button>
-		<button onclick="socket.emit('click', 'b');">B</button>
-		<button onclick="socket.emit('click', 'c');">C</button>
-		<button onclick="socket.emit('click', 'd');">D</button>
-		<br>
-		<div id="a">0</div>
-		<div id="b">0</div>
-		<div id="c">0</div>
-		<div id="d">0</div>
+		<h1>Player</h1>
+		<div id="welcome">Bitte warten...</div>
+		<div id="game" style="display: none">
+			<div>Round: <div id="round"></div>/10</div>
+			<div>Time: <div id="timer"></div></div>
+			<div id="question"></div>
+			<button onclick="socket.emit('click', 'a');">A</button>
+			<button onclick="socket.emit('click', 'b');">B</button>
+			<button onclick="socket.emit('click', 'c');">C</button>
+			<button onclick="socket.emit('click', 'd');">D</button>
+		</div>
   	</body>
 </html>
