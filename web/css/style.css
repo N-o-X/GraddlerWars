@@ -2,12 +2,14 @@
   border: none;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  padding: 0 0.5em;
   margin: 0;
   font-family: Impact, Charcoal, sans-serif;
   width: 100%;
   color: white;
+}
+
+head {
+  display: none;
 }
 
 body {
