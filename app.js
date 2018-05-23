@@ -31,6 +31,10 @@ app.get('/css', function(req, res){
     res.sendFile(__dirname + '/web/css/style.css');
 });
 
+app.get('/js', function(req, res){
+    res.sendFile(__dirname + '/web/js/main.js');
+});
+
 
 var questions = [
     "Wie alt ist ein Döner?",
