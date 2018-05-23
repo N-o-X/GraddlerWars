@@ -3,12 +3,14 @@
   text-align: center;
   text-decoration: none;
   margin: 0;
+  padding: 0;
+  border-collapse: collapse;
   font-family: Impact, Charcoal, sans-serif;
-  width: 100%;
-  height: 100%;
   color: white;
 }
 
+
+/*
 head {
   display: none;
 }
@@ -39,10 +41,16 @@ body {
   height: 5%;
 }
 
-#question {
+.questionWrapper {
   font-size: 30px;
   float: left;
   height: 30%;
+  display: table;
+}
+
+.question {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .counter {
@@ -53,9 +61,9 @@ body {
 }
 
 .button {
-  padding: 15px 32px;
   display: inline-block;
   font-size: 16px;
+  height: 5%;
 }
 
 .button:hover {
@@ -79,9 +87,9 @@ body {
 
 .answerButton:active {
   filter: brightness(80%);
-}
+}*/
 
-.colorYellow {
+.colorYellow * {
   background-color: #FFF275;
   color: #2A2D34;
 }
@@ -104,4 +112,80 @@ body {
 
 .colorGreen {
   background-color: #009B72;
+}
+
+html, body {
+  background-color: #2A2D34;
+  height: 100%;
+}
+
+table {
+  text-align: center;
+  text-decoration: none;
+  margin: 0;
+  font-family: Impact, Charcoal, sans-serif;
+  width: 100%;
+  height: 100%;
+  color: black;
+  border: black 1px;
+}
+
+td {
+  width: 50%;
+}
+
+.row_small {
+  height: 7.5%
+}
+
+.row_big {
+  height: 30%;
+}
+
+.answerButton {
+  font-size: 25px;
+  width: 100%;
+  float: left;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.answerButton:hover {
+  filter: brightness(90%);
+}
+
+.answerButton:active {
+  filter: brightness(80%);
+}
+
+.text-large {
+  font-size: 27px;
+}
+
+.text-small {
+  font-size: 20px;
+}
+
+.counter {
+  font-size: 25px;
+  width: 100%;
+  float: left;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.button {
+  font-size: 20px;
+  height: 100%;
+  padding: 0 2em;
+}
+
+.button:hover {
+  filter: brightness(90%);
+}
+
+.button:active {
+  filter: brightness(80%);
 }

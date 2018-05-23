@@ -1,10 +1,13 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
+"use strict";
 
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
+let app = require('express')();
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
+let port = process.env.PORT || 3000;
+let Player = require('./models/player.js');
+
+let mysql      = require('mysql');
+let connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'graddlerworst',
     password : 'worstpasswort1234',
@@ -36,38 +39,56 @@ app.get('/js', function(req, res){
 });
 
 
-var questions = [
+let questions = [
     "Wie alt ist ein Döner?",
     "Wieso ist Opa so laut?",
     "Warum ist die Banane krumm?"
 ];
 
-var currentQuestionRow = [];
+let players = {};
 
-var count = {};
+let currentQuestionRow = [];
+let count = {};
 count['a'] = 0;
 count['b'] = 0;
 count['c'] = 0;
 count['d'] = 0;
 
-var currentRound = 0;
-var rounds = 2;
-var timeRemaining = 10;
-var isGameRunning = false;
-var isRoundRunning = false;
+let currentRound = 0;
+let rounds = 2;
+let timeRemaining = 10;
+let isGameRunning = false;
+let isRoundRunning = false;
 
 io.on('connection', function(socket) {
     prepareClient(socket);
 
+    socket.on('name', function(msg){
+        players[socket.id].name = msg;
+    });
+
     socket.on('click', function(msg){
-        if (isRoundRunning) {
+        if (isRoundRunning && !players[socket.id].locked) {
             count[msg]++;
+            players[socket.id].locked = true;
             console.log('Count for ' + msg + ': ' + count[msg]);
             io.emit('update_count', msg + '_' + count[msg]);
+        } else if (players[socket.id].locked) {
+            console.log('Client ' + socket.id +  ' is locked!');
         }
     });
 
     socket.on('start', function(msg){
+        for (let socketID in Object.keys(io.sockets.sockets)) {
+            /*let socket = io.sockets.sockets[socketID];
+
+            if (players[socket.id].loggedIn)  {
+                socket.emit('start', true);
+            } else {
+                socket.emit('start', false);
+            }*/
+        }
+
         io.emit('start');
         currentRound = 0;
         isGameRunning = true;
@@ -80,7 +101,7 @@ io.on('connection', function(socket) {
 });
 
 function nextQuestion() {
-    for (var key in count) {
+    for (let key in count) {
         count[key] = 0;
         io.emit('update_count', key + '_' + count[key]);
     }
@@ -107,6 +128,10 @@ function nextQuestion() {
         io.emit('update_answer_b', results[0].answer_b);
         io.emit('update_answer_c', results[0].answer_c);
         io.emit('update_answer_d', results[0].answer_d);
+
+        for (let socketid in players) {
+            players[socketid].locked = false;
+        }
     });
 }
 
@@ -119,6 +144,7 @@ function stopGame() {
 }
 
 function prepareClient(socket) {
+    players[socket.id] = new Player();
     if (isGameRunning) {
         socket.emit('start');
 
@@ -130,7 +156,7 @@ function prepareClient(socket) {
         socket.emit('update_answer_c', currentQuestionRow.answer_c);
         socket.emit('update_answer_d', currentQuestionRow.answer_d);
 
-        for (var key in count) {
+        for (let key in count) {
             socket.emit('update_count', key + '_' + count[key]);
         }
     } else {

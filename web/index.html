@@ -1,29 +1,78 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Quopen</title>
+		<title>Quopen - Player</title>
 		<link rel="stylesheet" type="text/css" href="css">
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 		<script src="js"></script>
   	</head>
-  	<body>
-		<div class="wrapper">
-			<div class="title colorYellow">Player</div>
-			<div id="before_game">
-				<div class="text colorYellow">Bitte warten...</div>
-			</div>
-			<div id="game" style="display: none">
-				<div class="stats colorYellow">Round: <div id="round" class="colorYellow" style="display: inline;"></div></div>
-				<div class="stats colorYellow">Time: <div id="timer" class="colorYellow" style="display: inline;"></div></div>
-				<p class="colorBlack" id="question"></p>
-				<div id="buttons">
-					<button class="answerButton colorBlue" id="answerA" onclick="socket.emit('click', 'a');">A</button>
-					<button class="answerButton colorOrange" id="answerB" onclick="socket.emit('click', 'b');">B</button>
-					<button class="answerButton colorPurple" id="answerC" onclick="socket.emit('click', 'c');">C</button>
-					<button class="answerButton colorGreen" id="answerD" onclick="socket.emit('click', 'd');">D</button>
-				</div>
-			</div>
-		</div>
+  	<body><!--
+<div class="wrapper">
+  <div class="title colorYellow">Player</div>
+  <div id="before_game">
+    <div class="text colorYellow">Bitte warten...</div>
+  </div>
+  <div id="game" style="display: none">
+    <div class="stats colorYellow">Round: <div id="round" class="colorYellow" style="display: inline;"></div></div>
+    <div class="stats colorYellow">Time: <div id="timer" class="colorYellow" style="display: inline;"></div></div>
+    <div class="questionWrapper colorBlack">
+      <div class="question" id="question"></div>
+    </div>
+    <div id="buttons">
+      <button class="answerButton colorBlue" id="answerA" onclick="socket.emit('click', 'a');">A</button>
+      <button class="answerButton colorOrange" id="answerB" onclick="socket.emit('click', 'b');">B</button>
+      <button class="answerButton colorPurple" id="answerC" onclick="socket.emit('click', 'c');">C</button>
+      <button class="answerButton colorGreen" id="answerD" onclick="socket.emit('click', 'd');">D</button>
+    </div>
+  </div>
+</div>
+-->
+
+		<table id="before_game">
+			<tr class="row_small colorYellow">
+				<td class="text-large" colspan="2">Bitte warten...</td>
+			</tr>
+		</table>
+		<table id="game" style="display: none;">
+				<tr class="row_small colorYellow">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td class="text-small" style="width: 33%;">
+									Round: <div id="round" class="colorYellow" style="display: inline-block"></div>
+								</td>
+								<td class="text-large" style="width: 33%;">
+									Player
+								</td>
+								<td class="text-small" style="width: 33%;">
+									Time: <div id="timer" class="colorYellow" style="display: inline-block"></div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr class="row_big colorBlack">
+					<td colspan="2">
+						<div class="text-large" id="question">THIS IS A PLACEHOLDER!</div>
+					</td>
+				</tr>
+				<tr class="row_big">
+					<td>
+						<button class="answerButton colorBlue" id="answerA" onclick="socket.emit('click', 'a');">A</button>
+					</td>
+					<td>
+						<button class="answerButton colorOrange" id="answerB" onclick="socket.emit('click', 'b');">B</button>
+					</td>
+				</tr>
+				<tr class="row_big">
+					<td>
+						<button class="answerButton colorPurple" id="answerC" onclick="socket.emit('click', 'c');">C</button>
+					</td>
+					<td>
+						<button class="answerButton colorGreen" id="answerD" onclick="socket.emit('click', 'd');">D</button>
+					</td>
+				</tr>
+			</table>
   	</body>
 </html>
