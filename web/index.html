@@ -9,9 +9,20 @@
 	</head>
 	<body>
 		<table id="before_game">
-			<tr class="row_small colorYellow">
-				<td class="text-large" colspan="2">Bitte warten...</td>
+			<tr class="row_big colorYellow">
+				<td colspan="2">
+					<div class="text-title-big">GraddlerWars</div>
+				</td>
 			</tr>
+			<tr class="row_big colorYellow">
+				<td colspan="2">
+					<div class="text-title-small">Choose a name:</div>
+					<input type="text" class="colorBlack" id="name-field">
+					<br>
+					<button class="button" onclick="socket.emit('login');">Login</button>
+				</td>
+			</tr>
+			<tr class="row_big colorYellow"><td></td></tr>
 		</table>
 		<table id="game" style="display: none;">
 				<tr class="row_small colorYellow">

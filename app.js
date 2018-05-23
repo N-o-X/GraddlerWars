@@ -63,22 +63,23 @@ let isRoundRunning = false;
 io.on('connection', function(socket) {
     prepareClient(socket);
 
-    socket.on('name', function(msg){
-        players[socket.id].name = msg;
+    socket.on('name', function(name){
+        players[socket.id].name = name;
     });
 
-    socket.on('click', function(msg){
+    socket.on('click', function(letter){
         if (isRoundRunning && !players[socket.id].locked) {
-            count[msg]++;
+            count[letter]++;
             players[socket.id].locked = true;
-            console.log('Count for ' + msg + ': ' + count[msg]);
-            io.emit('update_count', msg + '_' + count[msg]);
+
+            console.log('Count for ' + letter + ': ' + count[letter]);
+            io.emit('update_count', {letter: letter, count: count[letter]});
         } else if (players[socket.id].locked) {
             console.log('Client ' + socket.id +  ' is locked!');
         }
     });
 
-    socket.on('start', function(msg){
+    socket.on('start', function(){
         for (let socketID in Object.keys(io.sockets.sockets)) {
             /*let socket = io.sockets.sockets[socketID];
 
@@ -95,7 +96,7 @@ io.on('connection', function(socket) {
         nextQuestion();
     });
 
-    socket.on('next_question', function(msg){
+    socket.on('next_question', function(){
         nextQuestion();
     });
 });
@@ -103,7 +104,7 @@ io.on('connection', function(socket) {
 function nextQuestion() {
     for (let key in count) {
         count[key] = 0;
-        io.emit('update_count', key + '_' + count[key]);
+        io.emit('update_count', {letter: key, count: count[key]});
     }
 
     currentRound++;
@@ -124,10 +125,12 @@ function nextQuestion() {
         io.emit('update_round', currentRound + '/' + rounds);
         io.emit('update_timer', timeRemaining);
         io.emit('update_question', results[0].question);
-        io.emit('update_answer_a', results[0].answer_a);
-        io.emit('update_answer_b', results[0].answer_b);
-        io.emit('update_answer_c', results[0].answer_c);
-        io.emit('update_answer_d', results[0].answer_d);
+        io.emit('update_answers', {
+            a: results[0].answer_a,
+            b: results[0].answer_b,
+            c: results[0].answer_c,
+            d: results[0].answer_d
+        });
 
         for (let socketid in players) {
             players[socketid].locked = false;
@@ -151,13 +154,15 @@ function prepareClient(socket) {
         socket.emit('update_round', currentRound + '/' + rounds);
         socket.emit('update_timer', timeRemaining);
         socket.emit('update_question', currentQuestionRow.question);
-        socket.emit('update_answer_a', currentQuestionRow.answer_a);
-        socket.emit('update_answer_b', currentQuestionRow.answer_b);
-        socket.emit('update_answer_c', currentQuestionRow.answer_c);
-        socket.emit('update_answer_d', currentQuestionRow.answer_d);
+        socket.emit('update_answers', {
+            a: currentQuestionRow.answer_a,
+            b: currentQuestionRow.answer_b,
+            c: currentQuestionRow.answer_c,
+            d: currentQuestionRow.answer_d
+        });
 
         for (let key in count) {
-            socket.emit('update_count', key + '_' + count[key]);
+            socket.emit('update_count', {letter: key, count: count[key]});
         }
     } else {
         socket.emit('stop');

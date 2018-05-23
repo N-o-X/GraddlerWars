@@ -34,6 +34,11 @@
   background-color: #009B72;
 }
 
+.colorWhite * {
+  background-color: white;
+  color: #2A2D34;
+}
+
 html, body {
   background-color: #2A2D34;
   height: 100%;
@@ -79,6 +84,14 @@ td {
   filter: brightness(80%);
 }
 
+.text-title-big {
+  font-size: 100px;
+}
+
+.text-title-small {
+  font-size: 40px;
+}
+
 .text-large {
   font-size: 27px;
 }
@@ -108,4 +121,15 @@ td {
 
 .button:active {
   filter: brightness(80%);
+}
+
+input[type=text], select {
+  color: #FFF275;
+  width: 300px;
+  padding: 20px 40px;
+  margin: 8px 0;
+  display: inline-block;
+  border: none;
+  box-sizing: content-box;
+  font-size: 30px;
 }
