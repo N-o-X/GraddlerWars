@@ -17,10 +17,10 @@
 				<div class="stats colorYellow">Round: <div id="round" style="display: inline;"></div></div>
 				<div class="stats colorYellow">Time: <div id="timer" style="display: inline;"></div></div>
 				<p class="colorBlack" id="question"></p>
-				<button class="answerButton colorBlue" onclick="socket.emit('click', 'a');">A</button>
-				<button class="answerButton colorOrange" onclick="socket.emit('click', 'b');">B</button>
-				<button class="answerButton colorPurple" onclick="socket.emit('click', 'c');">C</button>
-				<button class="answerButton colorGreen" onclick="socket.emit('click', 'd');">D</button>
+				<button class="answerButton colorBlue" id="answerA" onclick="socket.emit('click', 'a');">A</button>
+				<button class="answerButton colorOrange" id="answerB" onclick="socket.emit('click', 'b');">B</button>
+				<button class="answerButton colorPurple" id="answerC" onclick="socket.emit('click', 'c');">C</button>
+				<button class="answerButton colorGreen" id="answerD" onclick="socket.emit('click', 'd');">D</button>
 			</div>
 		</div>
   	</body>

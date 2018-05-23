@@ -42,7 +42,7 @@ var questions = [
     "Warum ist die Banane krumm?"
 ];
 
-var currentQuestion = Math.floor(Math.random()*questions.length);
+var currentQuestionRow = [];
 
 var count = {};
 count['a'] = 0;
@@ -95,13 +95,19 @@ function nextQuestion() {
     timeRemaining = 10;
     isRoundRunning = true;
 
-    var questionID = Math.floor(Math.random()*questions.length);
-    currentQuestion = questionID;
-    var question = questions[questionID];
+    connection.query('SELECT * FROM questions ORDER BY RAND() LIMIT 1', function (error, results, fields) {
+        if (error) throw error;
 
-    io.emit('update_round', currentRound + '/' + rounds);
-    io.emit('update_timer', timeRemaining);
-    io.emit('update_question', question);
+        currentQuestionRow = results[0];
+
+        io.emit('update_round', currentRound + '/' + rounds);
+        io.emit('update_timer', timeRemaining);
+        io.emit('update_question', results[0].question);
+        io.emit('update_answer_a', results[0].answer_a);
+        io.emit('update_answer_b', results[0].answer_b);
+        io.emit('update_answer_c', results[0].answer_c);
+        io.emit('update_answer_d', results[0].answer_d);
+    });
 }
 
 function stopGame() {
@@ -117,8 +123,12 @@ function prepareClient(socket) {
         socket.emit('start');
 
         socket.emit('update_round', currentRound + '/' + rounds);
-        socket.emit('update_question', questions[currentQuestion]);
         socket.emit('update_timer', timeRemaining);
+        socket.emit('update_question', currentQuestionRow.question);
+        socket.emit('update_answer_a', currentQuestionRow.answer_a);
+        socket.emit('update_answer_b', currentQuestionRow.answer_b);
+        socket.emit('update_answer_c', currentQuestionRow.answer_c);
+        socket.emit('update_answer_d', currentQuestionRow.answer_d);
 
         for (var key in count) {
             socket.emit('update_count', key + '_' + count[key]);

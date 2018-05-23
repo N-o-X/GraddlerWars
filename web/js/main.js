@@ -5,6 +5,18 @@ socket.on('update_round', function (msg){
 socket.on('update_question', function(msg){
     $('#question').html(msg);
 });
+socket.on('update_answer_a', function(msg){
+    $('#answerA').html(msg)
+});
+socket.on('update_answer_b', function(msg){
+    $('#answerB').html(msg)
+});
+socket.on('update_answer_c', function(msg){
+    $('#answerC').html(msg)
+});
+socket.on('update_answer_d', function(msg){
+    $('#answerD').html(msg)
+});
 socket.on('update_timer', function(msg){
     $('#timer').html(msg);
 });
