@@ -11,26 +11,26 @@ var connection = mysql.createConnection({
     database : 'GraddlerWorst'
 });
 
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-});
-
 app.get('/', function(req, res){
     if (isGameRunning) {
-        res.sendFile(__dirname + '/view.html');
+        res.sendFile(__dirname + '/web/view.html');
     } else {
-        res.sendFile(__dirname + '/index.html');
+        res.sendFile(__dirname + '/web/index.html');
     }
 });
 
 app.get('/master', function(req, res){
-    res.sendFile(__dirname + '/master.html');
+    res.sendFile(__dirname + '/web/master.html');
 });
 
 app.get('/view', function(req, res){
-    res.sendFile(__dirname + '/view.html');
+    res.sendFile(__dirname + '/web/view.html');
 });
+
+app.get('/css', function(req, res){
+    res.sendFile(__dirname + '/web/css/style.css');
+});
+
 
 var questions = [
     "Wie alt ist ein Döner?",
@@ -47,7 +47,7 @@ count['c'] = 0;
 count['d'] = 0;
 
 var currentRound = 0;
-var rounds = 10;
+var rounds = 2;
 var timeRemaining = 10;
 var isGameRunning = false;
 var isRoundRunning = false;
@@ -64,7 +64,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('start', function(msg){
-        connection.connect();
         io.emit('start');
         currentRound = 0;
         isGameRunning = true;
@@ -96,27 +95,32 @@ function nextQuestion() {
     currentQuestion = questionID;
     var question = questions[questionID];
 
-    io.emit('update_round', currentRound);
+    io.emit('update_round', currentRound + '/' + rounds);
     io.emit('update_timer', timeRemaining);
     io.emit('update_question', question);
 }
 
 function stopGame() {
-    connection.end();
     isRoundRunning = false;
     isGameRunning = false;
     currentRound = 0;
     io.emit('stop');
-    io.emit('update_round', currentRound);
+    io.emit('update_round', currentRound + '/' + rounds);
 }
 
 function prepareClient(socket) {
-    socket.emit('update_round', currentRound);
-    socket.emit('update_question', questions[currentQuestion]);
-    socket.emit('update_timer', timeRemaining);
+    if (isGameRunning) {
+        socket.emit('start');
 
-    for (var key in count) {
-        socket.emit('update_count', key + '_' + count[key]);
+        socket.emit('update_round', currentRound + '/' + rounds);
+        socket.emit('update_question', questions[currentQuestion]);
+        socket.emit('update_timer', timeRemaining);
+
+        for (var key in count) {
+            socket.emit('update_count', key + '_' + count[key]);
+        }
+    } else {
+        socket.emit('stop');
     }
 }
 
