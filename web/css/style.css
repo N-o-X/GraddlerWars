@@ -11,98 +11,94 @@
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
 .wrapper {
 }
 
 .title {
-    font-size: 27px;
-    float: left;
+  font-size: 27px;
+  float: left;
 }
 
 .text {
-    font-size: 20px;
-    float: left;
+  font-size: 20px;
+  float: left;
 }
 
 .stats {
-    font-size: 22px;
-    width: 50%;
-    float: left;
+  font-size: 22px;
+  width: 50%;
+  float: left;
 }
 
 #question {
-    font-size: 30px;
-    padding-top: 4em;
-    padding-bottom: 4em;
-    float: left;
+  font-size: 30px;
+  padding-top: 4em;
+  padding-bottom: 4em;
+  float: left;
 }
 
 .counter {
-    font-size: 25px;
-    width: 50%;
-    padding-top: 4em;
-    padding-bottom: 4em;
-    float: left;
+  font-size: 25px;
+  width: 50%;
+  padding-top: 4em;
+  padding-bottom: 4em;
+  float: left;
 }
 
 .button {
-    padding: 15px 32px;
-    display: inline-block;
-    font-size: 16px;
+  padding: 15px 32px;
+  display: inline-block;
+  font-size: 16px;
 }
 
 .button:hover {
-    filter: brightness(90%);
+  filter: brightness(90%);
 }
 
 .button:active {
-    filter: brightness(80%);
+  filter: brightness(80%);
 }
 
 .answerButton {
-    font-size: 25px;
-    width: 50%;
-    padding-top: 4em;
-    padding-bottom: 4em;
-    float: left;
+  font-size: 25px;
+  width: 50%;
+  padding-top: 4em;
+  padding-bottom: 4em;
+  float: left;
 }
 
 .answerButton:hover {
-    filter: brightness(90%);
+  filter: brightness(90%);
 }
 
 .answerButton:active {
-    filter: brightness(80%);
+  filter: brightness(80%);
 }
 
 .colorYellow {
-    background-color: #FFF275;
-    color: #2A2D34;
-}
-
-.colorBlack {
-    background-color: #2A2D34;
-}
-
-.colorBlue {
-    background-color: #009DDC;
-}
-
-.colorOrange {
-    background-color: #F26430;
-}
-
-.colorPurple {
-    background-color: #6761A8;
-}
-
-.colorGreen {
-    background-color: #009B72;
+  background-color: #FFF275;
+  color: #2A2D34;
 }
 
 .colorBlack {
   background-color: #2A2D34;
+}
+
+.colorBlue {
+  background-color: #009DDC;
+}
+
+.colorOrange {
+  background-color: #F26430;
+}
+
+.colorPurple {
+  background-color: #6761A8;
+}
+
+.colorGreen {
+  background-color: #009B72;
 }
