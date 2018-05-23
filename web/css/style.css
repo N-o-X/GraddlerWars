@@ -1,81 +1,47 @@
+* {
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  padding: 0 0.5em;
+  margin: 0;
+  font-family: Impact, Charcoal, sans-serif;
+  width: 100%;
+  color: white;
+}
+
 body {
     margin: 0;
-    background-color: #2A2D34;
 }
 
 .wrapper {
-    text-align: center;
 }
 
 .title {
-    border: none;
-    color: #2A2D34;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 27px;
-    font-family: Impact, Charcoal, sans-serif;
-    width: 100%;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
     float: left;
-    margin: 0;
 }
 
 .text {
-    border: none;
-    color: #2A2D34;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 20px;
-    font-family: Impact, Charcoal, sans-serif;
-    width: 100%;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
     float: left;
-    margin: 0;
 }
 
 .stats {
-    border: none;
-    color: #2A2D34;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 22px;
-    font-family: Impact, Charcoal, sans-serif;
     width: 50%;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
     float: left;
-    margin: 0;
 }
 
 #question {
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 30px;
-    font-family: Impact, Charcoal, sans-serif;
-    width: 100%;
     padding-top: 4em;
     padding-bottom: 4em;
     float: left;
-    margin: 0;
 }
 
 .counter {
-    background-color: white;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 25px;
-    font-family: Impact, Charcoal, sans-serif;
     width: 50%;
     padding-top: 4em;
     padding-bottom: 4em;
@@ -83,15 +49,9 @@ body {
 }
 
 .button {
-    background-color: white;
-    border: none;
-    color: white;
     padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    font-family: Impact, Charcoal, sans-serif;
 }
 
 .button:hover {
@@ -103,14 +63,7 @@ body {
 }
 
 .answerButton {
-    background-color: white;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 25px;
-    font-family: Impact, Charcoal, sans-serif;
     width: 50%;
     padding-top: 4em;
     padding-bottom: 4em;
@@ -148,4 +101,8 @@ body {
 
 .colorGreen {
     background-color: #009B72;
+}
+
+.colorBlack {
+  background-color: #2A2D34;
 }
