@@ -6,29 +6,8 @@
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 		<script src="js"></script>
-  	</head>
-  	<body><!--
-<div class="wrapper">
-  <div class="title colorYellow">Player</div>
-  <div id="before_game">
-    <div class="text colorYellow">Bitte warten...</div>
-  </div>
-  <div id="game" style="display: none">
-    <div class="stats colorYellow">Round: <div id="round" class="colorYellow" style="display: inline;"></div></div>
-    <div class="stats colorYellow">Time: <div id="timer" class="colorYellow" style="display: inline;"></div></div>
-    <div class="questionWrapper colorBlack">
-      <div class="question" id="question"></div>
-    </div>
-    <div id="buttons">
-      <button class="answerButton colorBlue" id="answerA" onclick="socket.emit('click', 'a');">A</button>
-      <button class="answerButton colorOrange" id="answerB" onclick="socket.emit('click', 'b');">B</button>
-      <button class="answerButton colorPurple" id="answerC" onclick="socket.emit('click', 'c');">C</button>
-      <button class="answerButton colorGreen" id="answerD" onclick="socket.emit('click', 'd');">D</button>
-    </div>
-  </div>
-</div>
--->
-
+	</head>
+	<body>
 		<table id="before_game">
 			<tr class="row_small colorYellow">
 				<td class="text-large" colspan="2">Bitte warten...</td>
@@ -73,6 +52,6 @@
 						<button class="answerButton colorGreen" id="answerD" onclick="socket.emit('click', 'd');">D</button>
 					</td>
 				</tr>
-			</table>
-  	</body>
+		</table>
+	</body>
 </html>
