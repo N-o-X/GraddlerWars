@@ -24,6 +24,9 @@ socket.on('update_count', function(msg){
     var parts = msg.split('_');
     $('#' + parts[0]).html(parts[1]);
 });
+socket.on('lock_answer', function(msg){
+
+});
 
 socket.on('start', function(msg){
     document.getElementById("before_game").style.display = "none";
