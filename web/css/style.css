@@ -9,6 +9,25 @@
   color: white;
 }
 
+.tile {
+    border: 10px solid #2b2d35;
+    background-color: #fff374;
+    color: #2b2d35;
+}
+
+.wrong, .wrong * {
+  background-color: #ef5350;
+}
+
+.correct, .correct * {
+  background-color: #8bc34a;
+}
+
+.tile * {
+    background-color: #fff374;
+    color: #2b2d35;
+}
+
 .colorYellow, .colorYellow * {
   background-color: #FFF275;
   color: #2A2D34;
@@ -16,23 +35,7 @@
 
 .colorBlack, .colorBlack * {
   background-color: #2A2D34;
-  color: white;
-}
-
-.colorBlue {
-  background-color: #009DDC;
-}
-
-.colorOrange {
-  background-color: #F26430;
-}
-
-.colorPurple {
-  background-color: #6761A8;
-}
-
-.colorGreen {
-  background-color: #009B72;
+  color: #FFF275;
 }
 
 .colorWhite, .colorWhite * {
@@ -83,11 +86,11 @@ td {
   padding: 0;
 }
 
-.answerButton:hover {
+.tile:hover {
   filter: brightness(90%);
 }
 
-.answerButton:active {
+.tile:active {
   filter: brightness(80%);
 }
 
