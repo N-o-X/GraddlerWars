@@ -85,6 +85,10 @@ td {
   height: 30%;
 }
 
+.row_very_big {
+  height: 70%;
+}
+
 .answerButton {
   font-size: 25px;
   width: 100%;

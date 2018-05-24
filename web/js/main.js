@@ -10,7 +10,7 @@ $(function() {
 
     socket.on('add_team', function(team) {
         $('#teams').append(
-            "<button class=\"teamButton colorBlack\" onclick=\"teamClick('" + team + "')\">" + team + "</button>"
+            "<button class=\"teamButton colorSecondary\" onclick=\"teamClick('" + team + "')\">" + team + "</button>"
         )
     });
 
