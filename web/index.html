@@ -9,50 +9,50 @@
 	</head>
 	<body>
 		<table id="login">
-			<tr class="row_big colorYellow">
+			<tr class="row_big colorPrimary">
 				<td colspan="2">
 					<div class="text-title-big">GraddlerWars</div>
 				</td>
 			</tr>
-			<tr class="row_big colorYellow">
+			<tr class="row_big colorPrimary">
 				<td colspan="2">
 					<div class="text-title-small">Choose a name:</div>
-					<input type="text" class="colorBlack" id="name-field">
+					<input type="text" class="colorSecondary" id="name-field">
 				</td>
 			</tr>
-			<tr class="row_big colorYellow">
+			<tr class="row_big colorPrimary">
 				<td colspan="2">
 					<div class="text-title-small">Choose a team:</div>
-					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 1, name: $('#name-field').val()});">Team 1</button>
-					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 2, name: $('#name-field').val()});">Team 2</button>
-					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 3, name: $('#name-field').val()});">Team 3</button>
+					<button class="teamButton colorSecondary" onclick="socket.emit('login', {team: 1, name: $('#name-field').val()});">Team 1</button>
+					<button class="teamButton colorSecondary" onclick="socket.emit('login', {team: 2, name: $('#name-field').val()});">Team 2</button>
+					<button class="teamButton colorSecondary" onclick="socket.emit('login', {team: 3, name: $('#name-field').val()});">Team 3</button>
 				</td>
 			</tr>
 		</table>
     <table id="before_game" style="display: none">
-      <tr class="row_small colorYellow">
+      <tr class="row_small colorPrimary">
         <td class="text-title-small" colspan="2">Bitte warten...</td>
       </tr>
     </table>
 		<table id="game" style="display: none;">
-				<tr class="row_small colorYellow">
+				<tr class="row_small colorPrimary">
 					<td colspan="2">
 						<table>
 							<tr>
 								<td class="text-small" style="width: 33%;">
-									Round: <div id="round" class="colorYellow" style="display: inline-block"></div>
+									Round: <div id="round" class="colorPrimary" style="display: inline-block"></div>
 								</td>
 								<td class="text-large" style="width: 33%;">
 									Player
 								</td>
 								<td class="text-small" style="width: 33%;">
-									Time: <div id="timer" class="colorYellow" style="display: inline-block"></div>
+									Time: <div id="timer" class="colorPrimary" style="display: inline-block"></div>
 								</td>
 							</tr>
 						</table>
 					</td>
 				</tr>
-				<tr class="row_big colorBlack">
+				<tr class="row_big colorSecondary">
 					<td colspan="2">
 						<div class="text-large" id="question">THIS IS A PLACEHOLDER!</div>
 					</td>
