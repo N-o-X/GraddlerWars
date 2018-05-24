@@ -80,11 +80,11 @@ td {
   padding: 0;
 }
 
-.answerButton:hover {
+.tile:hover {
   filter: brightness(90%);
 }
 
-.answerButton:active {
+.tile:active {
   filter: brightness(80%);
 }
 
