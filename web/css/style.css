@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Anton');
 
-/*/ COLOURS
+/* COLOURS
 
   @primary: #f5d6ba
   @primary-dark: #f49d6e
@@ -15,7 +16,7 @@
   margin: 0;
   padding: 0;
   border-collapse: collapse;
-  font-family: Impact, Charcoal, sans-serif;
+  font-family: 'Anton', sans-serif;
   color: white;
 }
 
@@ -31,11 +32,11 @@
 }
 
 .wrong, .wrong * {
-  background-color: #c36161;
+  background-color: #c36161 !important;
 }
 
 .correct, .correct * {
-  background-color: #acc3a6;
+  background-color: #acc3a6 !important;
 }
 
 .locked, .locked * {
@@ -109,6 +110,10 @@ td {
   font-size: 40px;
 }
 
+.text-counter {
+  font-size: 45px;
+}
+
 .text-large {
   font-size: 27px;
 }
@@ -154,8 +159,10 @@ td {
 }
 
 .teamButton {
+  text-align: center;
   font-size: 40px;
-  padding: 0 2em;
+  margin: 0 0.5em;
+  width: 20%;
   color: #f5d6ba;
 }
 

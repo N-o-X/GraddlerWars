@@ -34,40 +34,37 @@ app.get('/js', function(req, res){
     res.sendFile(__dirname + '/web/js/main.js');
 });
 
-
-let questions = [
-    "Wie alt ist ein Döner?",
-    "Wieso ist Opa so laut?",
-    "Warum ist die Banane krumm?"
+//Config
+let teams = [
+  'Rot',
+  'Gelb',
+  'Publikum'
 ];
+let rounds = 5;
+let defaultTime = 15;
+//---------
 
 let players = {};
-
-let currentQuestionRow = [];
+let teamPoints = {};
 let count = {};
-count['a'] = 0;
-count['b'] = 0;
-count['c'] = 0;
-count['d'] = 0;
-
+let currentQuestionRow = [];
 let currentRound = 0;
-let rounds = 2;
-let timeRemaining = 10;
+let timeRemaining = 0;
 let isGameRunning = false;
 let isRoundRunning = false;
 
 io.on('connection', function(socket) {
-    console.log("Socket " + socket.id + " connected!");
+    console.log('Socket ' + socket.id + ' connected!');
     prepareClient(socket);
 
     socket.on('login', function(data){
         data.name = data.name.toString().trim();
-        if (data.name && data.team) {
+        if (data.name && teams.includes(data.team)) {
             players[socket.id].name = data.name;
             players[socket.id].team = data.team;
 
-            console.log("Socket " + socket.id + " logged in with name " +  data.name + " and team " +  data.team);
-            socket.emit('login_success');
+            console.log('Socket ' + socket.id + ' logged in with name ' +  data.name + ' and team ' +  data.team);
+            socket.emit('login_success', {name: data.name, team: data.team});
         }
     });
 
@@ -77,7 +74,12 @@ io.on('connection', function(socket) {
             players[socket.id].locked = true;
 
             console.log('Count for ' + letter + ': ' + count[letter]);
-            io.emit('update_count', {letter: letter, count: count[letter]});
+            socket.emit('lock_answer', letter);
+
+            if (currentQuestionRow.correct_answer.toLowerCase() === letter) {
+                players[socket.id].points++;
+                teamPoints[players[socket.id].team]++;
+            }
         } else if (players[socket.id].locked) {
             console.log('Client ' + socket.id +  ' is locked or not logged in!');
         }
@@ -103,10 +105,12 @@ io.on('connection', function(socket) {
 
     socket.on('disconnect', function(){
         if (players[socket.id].loggedIn) {
-            console.log("Socket " + socket.id + " (" + players[socket.id].name + ") disconnected!");
+            console.log('Socket ' + socket.id + ' (' + players[socket.id].name + ') disconnected!');
         } else {
-            console.log("Socket " + socket.id + " disconnected!");
+            console.log('Socket ' + socket.id + ' disconnected!');
         }
+
+        delete players[socket.id];
     });
 });
 
@@ -123,7 +127,7 @@ function nextQuestion() {
         return;
     }
 
-    timeRemaining = 10;
+    timeRemaining = defaultTime;
     isRoundRunning = true;
 
     connection.query('SELECT * FROM questions ORDER BY RAND() LIMIT 1', function (error, results, fields) {
@@ -153,6 +157,34 @@ function stopGame() {
     currentRound = 0;
     io.emit('stop');
     io.emit('update_round', currentRound + '/' + rounds);
+    prepareGame();
+}
+
+function endRound() {
+    isRoundRunning = false;
+    io.emit('update_correct', currentQuestionRow.correct_answer.toLowerCase());
+    io.emit('update_count', {letter: 'a', count: count['a']});
+    io.emit('update_count', {letter: 'b', count: count['b']});
+    io.emit('update_count', {letter: 'c', count: count['c']});
+    io.emit('update_count', {letter: 'd', count: count['d']});
+
+    for (let socketid in players) {
+        io.to(socketid).emit('update_points', players[socketid].points);
+        io.to(socketid).emit('update_teampoints', teamPoints[players[socketid].team]);
+    }
+}
+
+function prepareGame() {
+    count['a'] = 0;
+    count['b'] = 0;
+    count['c'] = 0;
+    count['d'] = 0;
+
+    timeRemaining = defaultTime;
+    for (let teamIndex in teams) {
+        teamPoints[teams[teamIndex]] = 0;
+    }
+
 }
 
 function prepareClient(socket) {
@@ -169,12 +201,12 @@ function prepareClient(socket) {
             c: currentQuestionRow.answer_c,
             d: currentQuestionRow.answer_d
         });
-
-        for (let key in count) {
-            socket.emit('update_count', {letter: key, count: count[key]});
-        }
     } else {
         socket.emit('stop');
+
+        for (let teamID in teams) {
+            socket.emit('add_team', teams[teamID]);
+        }
     }
 }
 
@@ -185,12 +217,13 @@ function questionTimer() {
         io.emit('update_timer', timeRemaining);
 
         if (timeRemaining <= 0) {
-            isRoundRunning = false;
+            endRound();
         }
     }
 }
 
 setInterval(questionTimer, 1000);
+prepareGame();
 
 http.listen(port, function(){
     console.log('listening on *:' + port);
