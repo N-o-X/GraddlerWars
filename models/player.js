@@ -3,6 +3,7 @@
 class Player {
     constructor() {
         this.locked = false;
+        this.points = 0;
     }
 
     set name(name) {
@@ -35,10 +36,6 @@ class Player {
 
     get locked() {
         return this._locked;
-    }
-
-    addPoints(points) {
-        this.points += points;
     }
 
     get loggedIn() {

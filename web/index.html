@@ -21,11 +21,8 @@
 				</td>
 			</tr>
 			<tr class="row_big colorYellow">
-				<td colspan="2">
+				<td colspan="2" id="teams">
 					<div class="text-title-small">Choose a team:</div>
-					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 1, name: $('#name-field').val()});">Team 1</button>
-					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 2, name: $('#name-field').val()});">Team 2</button>
-					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 3, name: $('#name-field').val()});">Team 3</button>
 				</td>
 			</tr>
 		</table>
@@ -39,15 +36,21 @@
 					<td colspan="2">
 						<table>
 							<tr>
-								<td class="text-small" style="width: 33%;">
-									Round: <div id="round" class="colorYellow" style="display: inline-block"></div>
+								<td class="text-small" style="width: 20%;">
+									Round: <div id="round" class="colorYellow" style="display: inline-block">0</div>
 								</td>
-								<td class="text-large" style="width: 33%;">
+                <td class="text-small" style="width: 20%;">
+                  Time: <div id="timer" class="colorYellow" style="display: inline-block">0</div>
+                </td>
+								<td class="text-large" id="player-name" style="width: 20%;">
 									Player
 								</td>
-								<td class="text-small" style="width: 33%;">
-									Time: <div id="timer" class="colorYellow" style="display: inline-block"></div>
-								</td>
+                <td class="text-small" style="width: 20%;">
+                  Points: <div id="points" class="colorYellow" style="display: inline-block">0</div>
+                </td>
+                <td class="text-small" style="width: 20%;">
+                  Team: <div id="team" class="colorYellow" style="display: inline-block">0</div>
+                </td>
 							</tr>
 						</table>
 					</td>
@@ -58,19 +61,31 @@
 					</td>
 				</tr>
 				<tr class="row_big">
-					<td class="tile">
-						<button class="answerButton locked" id="answerA" onclick="socket.emit('click', 'a');">A</button>
+					<td class="tile" id="tile-a">
+            <button class="answerButton" onclick="socket.emit('click', 'a');">
+              <div class="text-large" id="answer-a">A</div>
+              <div class="text-counter" id="counter-a" style="display: none;">0</div>
+            </button>
 					</td>
-					<td class="tile">
-						<button class="answerButton" id="answerB" onclick="socket.emit('click', 'b');">B</button>
+					<td class="tile" id="tile-b">
+            <button class="answerButton" onclick="socket.emit('click', 'b');">
+              <div class="text-large" id="answer-b">D</div>
+              <div class="text-counter" id="counter-b" style="display: none;">0</div>
+            </button>
 					</td>
 				</tr>
 				<tr class="row_big">
-					<td class="tile">
-						<button class="answerButton" id="answerC" onclick="socket.emit('click', 'c');">C</button>
+					<td class="tile" id="tile-c">
+            <button class="answerButton" onclick="socket.emit('click', 'c');">
+              <div class="text-large" id="answer-c">C</div>
+              <div class="text-counter" id="counter-c" style="display: none;">0</div>
+            </button>
 					</td>
-					<td class="tile">
-						<button class="answerButton" id="answerD" onclick="socket.emit('click', 'd');">D</button>
+					<td class="tile" id="tile-d">
+						<button class="answerButton" onclick="socket.emit('click', 'd');">
+              <div class="text-large" id="answer-d">D</div>
+              <div class="text-counter" id="counter-d" style="display: none;">0</div>
+            </button>
 					</td>
 				</tr>
 		</table>

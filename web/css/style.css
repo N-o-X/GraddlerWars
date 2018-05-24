@@ -12,9 +12,9 @@
 }
 
 .tile {
-    border: 10px solid #2b2d35;
-    background-color: #fff374;
-    color: #2b2d35;
+  border: 10px solid #2b2d35;
+  background-color: #fff374;
+  color: #2b2d35;
 }
 
 .tile * {
@@ -23,11 +23,11 @@
 }
 
 .wrong, .wrong * {
-  background-color: #ef5350;
+  background-color: #ef5350 !important;
 }
 
 .correct, .correct * {
-  background-color: #8bc34a;
+  background-color: #8bc34a !important;
 }
 
 .locked, .locked * {
@@ -101,6 +101,10 @@ td {
   font-size: 40px;
 }
 
+.text-counter {
+  font-size: 45px;
+}
+
 .text-large {
   font-size: 27px;
 }
@@ -146,8 +150,10 @@ td {
 }
 
 .teamButton {
+  text-align: center;
   font-size: 40px;
-  padding: 0 2em;
+  margin: 0 0.5em;
+  width: 20%;
   color: #FFF275;
 }
 
