@@ -1,4 +1,14 @@
 var socket = io();
+
+var type = "Player";
+var loggedIn = false;
+
+socket.on('login_success', function() {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("before_game").style.display = "table";
+    loggedIn = true;
+});
+
 socket.on('update_round', function (round){
     $('#round').html(round);
 });
@@ -26,12 +36,22 @@ socket.on('lock_answer', function(letter){
     $('')
 });
 
-socket.on('start', function(msg){
-    document.getElementById("before_game").style.display = "none";
-    document.getElementById("game").style.display = "table";
+socket.on('start', function(loggedIn){
+    if (loggedIn || type !== "Player") {
+        document.getElementById("before_game").style.display = "none";
+        document.getElementById("game").style.display = "table";
+    } else {
+        window.location = "/view"
+    }
 });
 
 socket.on('stop', function(msg){
-    document.getElementById("before_game").style.display = "table";
-    document.getElementById("game").style.display = "none";
+    if (type === "Master") {
+        document.getElementById("game").style.display = "none";
+        document.getElementById("before_game").style.display = "table";
+    } else {
+        if (loggedIn || type === "Viewer") {
+            window.location = "/";
+        }
+    }
 });

@@ -38,7 +38,7 @@
   color: #FFF275;
 }
 
-.colorWhite * {
+.colorWhite, .colorWhite * {
   background-color: white;
   color: #2A2D34;
 }
@@ -48,6 +48,13 @@ html, body {
   height: 100%;
 }
 
+table, tr, th, td {
+  border: 0 none !important;
+  border-color: transparent;
+  border-style: hidden;
+}
+
+
 table {
   text-align: center;
   text-decoration: none;
@@ -56,7 +63,6 @@ table {
   width: 100%;
   height: 100%;
   color: black;
-  border: black 1px;
 }
 
 td {
@@ -124,6 +130,33 @@ td {
 }
 
 .button:active {
+  filter: brightness(80%);
+}
+
+.loginButton {
+  font-size: 20px;
+  padding: 0 2em;
+}
+
+.loginButton:hover {
+  filter: brightness(90%);
+}
+
+.loginButton:active {
+  filter: brightness(80%);
+}
+
+.teamButton {
+  font-size: 40px;
+  padding: 0 2em;
+  color: #FFF275;
+}
+
+.teamButton:hover {
+  filter: brightness(90%);
+}
+
+.teamButton:active {
   filter: brightness(80%);
 }
 
