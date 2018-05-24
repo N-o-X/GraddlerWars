@@ -1,14 +1,14 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Quopen - Player</title>
+		<title>GraddlerWars - Player</title>
 		<link rel="stylesheet" type="text/css" href="css">
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 		<script src="js"></script>
 	</head>
 	<body>
-		<table id="before_game">
+		<table id="login">
 			<tr class="row_big colorYellow">
 				<td colspan="2">
 					<div class="text-title-big">GraddlerWars</div>
@@ -18,12 +18,22 @@
 				<td colspan="2">
 					<div class="text-title-small">Choose a name:</div>
 					<input type="text" class="colorBlack" id="name-field">
-					<br>
-					<button class="button" onclick="socket.emit('login');">Login</button>
 				</td>
 			</tr>
-			<tr class="row_big colorYellow"><td></td></tr>
+			<tr class="row_big colorYellow">
+				<td colspan="2">
+					<div class="text-title-small">Choose a team:</div>
+					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 1, name: $('#name-field').val()});">Team 1</button>
+					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 2, name: $('#name-field').val()});">Team 2</button>
+					<button class="teamButton colorBlack" onclick="socket.emit('login', {team: 3, name: $('#name-field').val()});">Team 3</button>
+				</td>
+			</tr>
 		</table>
+    <table id="before_game" style="display: none">
+      <tr class="row_small colorYellow">
+        <td class="text-title-small" colspan="2">Bitte warten...</td>
+      </tr>
+    </table>
 		<table id="game" style="display: none;">
 				<tr class="row_small colorYellow">
 					<td colspan="2">

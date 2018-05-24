@@ -15,11 +15,7 @@ let connection = mysql.createConnection({
 });
 
 app.get('/', function(req, res){
-    if (isGameRunning) {
-        res.sendFile(__dirname + '/web/view.html');
-    } else {
-        res.sendFile(__dirname + '/web/index.html');
-    }
+    res.sendFile(__dirname + '/web/index.html');
 });
 
 app.get('/master', function(req, res){
@@ -61,36 +57,41 @@ let isGameRunning = false;
 let isRoundRunning = false;
 
 io.on('connection', function(socket) {
+    console.log("Socket " + socket.id + " connected!");
     prepareClient(socket);
 
-    socket.on('name', function(name){
-        players[socket.id].name = name;
+    socket.on('login', function(data){
+        data.name = data.name.toString().trim();
+        if (data.name && data.team) {
+            players[socket.id].name = data.name;
+            players[socket.id].team = data.team;
+
+            console.log("Socket " + socket.id + " logged in with name " +  data.name + " and team " +  data.team);
+            socket.emit('login_success');
+        }
     });
 
     socket.on('click', function(letter){
-        if (isRoundRunning && !players[socket.id].locked) {
+        if (isRoundRunning && !players[socket.id].locked && players[socket.id].loggedIn) {
             count[letter]++;
             players[socket.id].locked = true;
 
             console.log('Count for ' + letter + ': ' + count[letter]);
             io.emit('update_count', {letter: letter, count: count[letter]});
         } else if (players[socket.id].locked) {
-            console.log('Client ' + socket.id +  ' is locked!');
+            console.log('Client ' + socket.id +  ' is locked or not logged in!');
         }
     });
 
     socket.on('start', function(){
-        for (let socketID in Object.keys(io.sockets.sockets)) {
-            /*let socket = io.sockets.sockets[socketID];
-
-            if (players[socket.id].loggedIn)  {
-                socket.emit('start', true);
+        for (let socketid in io.sockets.sockets) {
+            if (players[socketid].loggedIn) {
+                io.to(socketid).emit('start', true);
             } else {
-                socket.emit('start', false);
-            }*/
+                io.to(socketid).emit('start', false);
+            }
         }
 
-        io.emit('start');
         currentRound = 0;
         isGameRunning = true;
         nextQuestion();
@@ -98,6 +99,14 @@ io.on('connection', function(socket) {
 
     socket.on('next_question', function(){
         nextQuestion();
+    });
+
+    socket.on('disconnect', function(){
+        if (players[socket.id].loggedIn) {
+            console.log("Socket " + socket.id + " (" + players[socket.id].name + ") disconnected!");
+        } else {
+            console.log("Socket " + socket.id + " disconnected!");
+        }
     });
 });
 
