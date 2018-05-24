@@ -15,6 +15,11 @@
     color: #2b2d35;
 }
 
+.tile * {
+  background-color: #fff374;
+  color: #2b2d35;
+}
+
 .wrong, .wrong * {
   background-color: #ef5350;
 }
@@ -23,19 +28,18 @@
   background-color: #8bc34a;
 }
 
-.tile * {
-    background-color: #fff374;
-    color: #2b2d35;
+.locked, .locked * {
+  background-color: #2196f3 !important;
 }
 
 .colorYellow, .colorYellow * {
-  background-color: #FFF275;
+  background-color: #fff374;
   color: #2A2D34;
 }
 
 .colorBlack, .colorBlack * {
   background-color: #2A2D34;
-  color: #FFF275;
+  color: white;
 }
 
 .colorWhite, .colorWhite * {
@@ -47,13 +51,6 @@ html, body {
   background-color: #2A2D34;
   height: 100%;
 }
-
-table, tr, th, td {
-  border: 0 none !important;
-  border-color: transparent;
-  border-style: hidden;
-}
-
 
 table {
   text-align: center;
