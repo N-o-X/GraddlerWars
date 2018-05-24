@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Anton');
 
+/* COLOURS
+
+  @primary: #f5d6ba
+  @primary-dark: #f49d6e
+  @secondary: #2c2c54
+  @wrong: #c36161
+  @correct: #acc3a6
+*/
+
 * {
   border: none;
   text-align: center;
@@ -12,45 +21,45 @@
 }
 
 .tile {
-  border: 10px solid #2b2d35;
-  background-color: #fff374;
-  color: #2b2d35;
+    border: 10px solid #2c2c54;
+    background-color: #f5d6ba;
+    color: #2c2c54;
 }
 
 .tile * {
-  background-color: #fff374;
-  color: #2b2d35;
+  background-color: #f5d6ba;
+  color: #2c2c54;
 }
 
 .wrong, .wrong * {
-  background-color: #ef5350 !important;
+  background-color: #c36161 !important;
 }
 
 .correct, .correct * {
-  background-color: #8bc34a !important;
+  background-color: #acc3a6 !important;
 }
 
 .locked, .locked * {
-  background-color: #2196f3 !important;
+  background-color: #f49d6e !important;
 }
 
-.colorYellow, .colorYellow * {
-  background-color: #fff374;
-  color: #2A2D34;
+.colorPrimary, .colorPrimary * {
+  background-color: #f5d6ba;
+  color: #2c2c54;
 }
 
-.colorBlack, .colorBlack * {
-  background-color: #2A2D34;
-  color: white;
+.colorPrimaryDark, .colorPrimaryDark * {
+  background-color: #f49d6e;
+  color: #2c2c54;
 }
 
-.colorWhite, .colorWhite * {
-  background-color: white;
-  color: #2A2D34;
+.colorSecondary, .colorSecondary * {
+  background-color: #2c2c54;
+  color: #f5d6ba;
 }
 
 html, body {
-  background-color: #2A2D34;
+  background-color: #2c2c54;
   height: 100%;
 }
 
@@ -61,7 +70,7 @@ table {
   font-family: Impact, Charcoal, sans-serif;
   width: 100%;
   height: 100%;
-  color: black;
+  color: #2c2c54;
 }
 
 td {
@@ -154,7 +163,7 @@ td {
   font-size: 40px;
   margin: 0 0.5em;
   width: 20%;
-  color: #FFF275;
+  color: #f5d6ba;
 }
 
 .teamButton:hover {
@@ -166,7 +175,7 @@ td {
 }
 
 input[type=text], select {
-  color: #FFF275;
+  color: #f5d6ba;
   width: 300px;
   padding: 20px 40px;
   margin: 8px 0;
