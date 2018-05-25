@@ -6,7 +6,7 @@
   @primary-dark: #f49d6e
   @secondary: #2c2c54
   @wrong: #c36161
-  @correct: #acc3a6
+  @correct: #b1c191
 */
 
 * {
@@ -36,7 +36,7 @@
 }
 
 .correct, .correct * {
-  background-color: #acc3a6 !important;
+  background-color: #b1c191 !important;
 }
 
 .locked, .locked * {
