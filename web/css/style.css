@@ -196,7 +196,7 @@ input[type=text], select {
 
 .scoreboardData {
   padding: 15px 0;
-  border: 100px solid #2c2c54;
+  border: 30px solid #2c2c54;
   border-bottom: 5px  solid #2c2c54;
   border-top: none;
 }

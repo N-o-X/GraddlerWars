@@ -25,7 +25,7 @@ $(function() {
     socket.on('login_success', function(data) {
         $('#login').css('display', 'none');
         $('#before_game').css('display', 'table');
-        $('#player-name').html(data.name + ' - ' + data.team);
+        $('#player-name').html(data.name);
         loggedIn = true;
     });
 
