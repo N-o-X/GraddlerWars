@@ -37,15 +37,15 @@ app.get('/js', function(req, res){
 
 //Config
 let teams = [
-  'Rot',
-  'Blau',
-  'Publikum'
+  'Red',
+  'Blue',
+  'Audience'
 ];
 let rounds = 15;
 let defaultTime = 20;
 let scoreboardTime = 15;
 let autoplay = true;
-let autoplayTime = 2;
+let autoplayTime = 4;
 //---------
 
 let players = {};
