@@ -9,9 +9,10 @@ let Player = require('./models/player.js');
 let mysql      = require('mysql');
 let connection = mysql.createConnection({
     host     : 'localhost',
-    user     : 'graddlerworst',
-    password : 'worstpasswort1234',
-    database : 'GraddlerWorst'
+    user     : 'graddlerwars',
+    password : '',
+    database : 'graddlerwars',
+    charset  : "LATIN1"
 });
 
 app.get('/', function(req, res){
@@ -37,7 +38,7 @@ app.get('/js', function(req, res){
 //Config
 let teams = [
   'Rot',
-  'Gelb',
+  'Blau',
   'Publikum'
 ];
 let rounds = 5;
