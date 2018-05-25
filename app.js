@@ -42,7 +42,7 @@ let teams = [
   'Publikum'
 ];
 let rounds = 5;
-let defaultTime = 15;
+let defaultTime = 5;
 //---------
 
 let players = {};
@@ -73,8 +73,6 @@ io.on('connection', function(socket) {
         if (isRoundRunning && !players[socket.id].locked && players[socket.id].loggedIn) {
             count[letter]++;
             players[socket.id].locked = true;
-
-            console.log('Count for ' + letter + ': ' + count[letter]);
             socket.emit('lock_answer', letter);
 
             if (currentQuestionRow.correct_answer.toLowerCase() === letter) {
@@ -124,7 +122,7 @@ function nextQuestion() {
     currentRound++;
 
     if (currentRound > rounds) {
-        stopGame();
+        showScoreboard();
         return;
     }
 
@@ -152,10 +150,49 @@ function nextQuestion() {
     });
 }
 
-function stopGame() {
+function showScoreboard() {
     isRoundRunning = false;
     isGameRunning = false;
     currentRound = 0;
+
+    let scoreboardTeams = {};
+    for (let teamIndex in teams) {
+        let name = teams[teamIndex];
+        scoreboardTeams[name] = {};
+        scoreboardTeams[name]['players'] = [];
+    }
+
+    for (let socketid in players) {
+        let player = players[socketid];
+        if (player.loggedIn) {
+            scoreboardTeams[player.team]['players'].push({name: player.name, points: player.points});
+        }
+    }
+
+    for (let teamIndex in teams) {
+        let name = teams[teamIndex];
+        let playerCount = Object.keys(scoreboardTeams[name]['players']).length;
+        if (playerCount === 0) {
+            scoreboardTeams[name]['points'] = 0;
+        } else {
+            scoreboardTeams[name]['points'] = Math.round(teamPoints[name] / playerCount);
+        }
+
+        scoreboardTeams[name]['players'].sort(function(a, b){
+            return b.points - a.points;
+        });
+
+        if (scoreboardTeams[name]['players'].length > 5) {
+            scoreboardTeams[name]['players'].length = 5;
+        }
+    }
+
+    io.emit('show_scoreboard', scoreboardTeams);
+
+    setTimeout(stopGame, 30 * 1000);
+}
+
+function stopGame() {
     io.emit('stop');
     io.emit('update_round', currentRound + '/' + rounds);
     prepareGame();
@@ -186,6 +223,12 @@ function prepareGame() {
         teamPoints[teams[teamIndex]] = 0;
     }
 
+    for (let socketid in players) {
+        let player = players[socketid];
+        player.name = null;
+        player.team = null;
+        player.points = 0;
+    }
 }
 
 function prepareClient(socket) {
@@ -204,10 +247,7 @@ function prepareClient(socket) {
         });
     } else {
         socket.emit('stop');
-
-        for (let teamID in teams) {
-            socket.emit('add_team', teams[teamID]);
-        }
+        socket.emit('add_teams', teams);
     }
 }
 
