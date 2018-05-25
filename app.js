@@ -41,8 +41,11 @@ let teams = [
   'Blau',
   'Publikum'
 ];
-let rounds = 5;
-let defaultTime = 5;
+let rounds = 15;
+let defaultTime = 20;
+let scoreboardTime = 15;
+let autoplay = true;
+let autoplayTime = 2;
 //---------
 
 let players = {};
@@ -189,7 +192,7 @@ function showScoreboard() {
 
     io.emit('show_scoreboard', scoreboardTeams);
 
-    setTimeout(stopGame, 30 * 1000);
+    setTimeout(stopGame, scoreboardTime * 1000);
 }
 
 function stopGame() {
@@ -209,6 +212,10 @@ function endRound() {
     for (let socketid in players) {
         io.to(socketid).emit('update_points', players[socketid].points);
         io.to(socketid).emit('update_teampoints', teamPoints[players[socketid].team]);
+    }
+
+    if (autoplay) {
+        setTimeout(nextQuestion, autoplayTime * 1000);
     }
 }
 
