@@ -5,6 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="css">
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 		<script src="js"></script>
 		<script>
 			type = "Viewer";
@@ -60,23 +61,17 @@
 				</td>
 			</tr>
 		</table>
-		<table id="summary">
-			<tr class="row_small colorPrimary">
-				<td class="text-title-small" style="width: 33%" colspan="2">TEAM 1</td>
-				<td class="text-title-small" style="width: 33%" colspan="2">TEAM 2</td>
-				<td class="text-title-small" style="width: 33%" colspan="2">TEAM 3</td>
+		<table id="summary" style="display: none;">
+			<tr class="row_big colorSecondary">
+				<td colspan="3">
+					<div class="text-title-big">GraddlerWars</div>
+				</td>
 			</tr>
-			<tr class="row_small colorPrimary">
-				<td class="text-large" style="width: 33%" colspan="2">150 Points</td>
-				<td class="text-large" style="width: 33%" colspan="2">TEAM 2</td>
-				<td class="text-large" style="width: 33%" colspan="2">TEAM 3</td>
+			<tr class="row_small" id="scoreboard-teams">
 			</tr>
-
-			<tr class="row_very_big colorPrimary">
-				<td class="text-large" style="width: 33%" colspan="2">TEAM 1</td>
-				<td class="text-large" style="width: 33%" colspan="2">TEAM 2</td>
-				<td class="text-large" style="width: 33%" colspan="2">TEAM 3</td>
+			<tr class="row_big" id="scoreboard-players">
 			</tr>
+			<tr class="row_big"><td colspan="3"></td></tr>
 		</table>
 	</body>
 </html>

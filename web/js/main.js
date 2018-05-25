@@ -8,10 +8,18 @@ var socket;
 $(function() {
     socket = io();
 
-    socket.on('add_team', function(team) {
-        $('#teams').append(
-            "<button class=\"teamButton colorSecondary\" onclick=\"teamClick('" + team + "')\">" + team + "</button>"
-        )
+    if (type === 'Player') {
+        console.log(Cookies.get('username'));
+        $('#name-field').val(Cookies.get('username'));
+    }
+
+    socket.on('add_teams', function(teams) {
+        $('#teams').empty();
+        for (let team in teams) {
+            $('#teams').append(
+                "<button class=\"teamButton colorSecondary\" onclick=\"teamClick('" + teams[team] + "')\">" + teams[team] + "</button>"
+            )
+        }
     });
 
     socket.on('login_success', function(data) {
@@ -97,6 +105,7 @@ $(function() {
 
     socket.on('stop', function(msg){
         if (type === 'Master') {
+            $('#summary').css('display', 'none');
             $('#game').css('display', 'none');
             $('#before_game').css('display', 'table');
         } else {
@@ -105,9 +114,39 @@ $(function() {
             }
         }
     });
+
+    socket.on('show_scoreboard', function (teams) {
+        $('#game').css('display', 'none');
+        $('#summary').css('display', 'table');
+
+        $('#scoreboard-teams').empty();
+        $('#scoreboard-players').empty();
+
+        for (let name in teams) {
+            let points = teams[name]['points'];
+            let players = teams[name]['players'];
+
+            $('#scoreboard-teams').append(
+                '<td class="scoreboardData colorPrimary" style="width: ' + 100 / Object.keys(teams).length + '%">' +
+                '<div class="text-title-small">' + name + '</div>' +
+                '<div class="text-large">' + points + ' Points</div>' +
+                '</td>'
+            );
+
+            $('#scoreboard-players').append(
+                '<td class="scoreboardData colorPrimary" id="playerList-' + name + '" style="width: ' + 100 / Object.keys(teams).length + '%"></td>'
+            );
+
+            for (let playerIndex in players) {
+                $('#playerList-' + name).append('<div class="text-large">' + players[playerIndex].name + ': ' + players[playerIndex].points + '</div>');
+            }
+        }
+    })
 });
 
 
 function teamClick(team) {
-    socket.emit('login', {team: team, name: $('#name-field').val()});
+    let name = $('#name-field').val();
+    Cookies.set('username', name);
+    socket.emit('login', {team: team, name: name});
 }

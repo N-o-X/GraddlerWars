@@ -9,6 +9,10 @@
   @correct: #b1c191
 */
 
+body {
+  text-align: center;
+}
+
 * {
   border: none;
   text-align: center;
@@ -138,6 +142,7 @@ td {
 .button {
   font-size: 20px;
   height: 100%;
+  width: 100%;
   padding: 0 2em;
 }
 
@@ -187,4 +192,16 @@ input[type=text], select {
   border: none;
   box-sizing: content-box;
   font-size: 30px;
+}
+
+.scoreboardData {
+  padding: 15px 0;
+  border: 100px solid #2c2c54;
+  border-bottom: 5px  solid #2c2c54;
+  border-top: none;
+}
+
+#summary {
+  max-width: 65em;
+  margin: 0 auto;
 }
