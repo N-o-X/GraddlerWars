@@ -29,6 +29,14 @@ $(function() {
         loggedIn = true;
     });
 
+    socket.on('update_player_counter', function(players) {
+        $('#players_waiting').html(players);
+    });
+
+    socket.on('update_autoplay_timer', function(timer) {
+        $('#autoplay_counter').html(timer);
+    });
+
     socket.on('update_round', function (round){
         $('#round').html(round);
     });

@@ -41,11 +41,12 @@ let teams = [
   'Blue',
   'Audience'
 ];
-let rounds = 15;
-let defaultTime = 20;
-let scoreboardTime = 15;
+let rounds = 10;
+let defaultTime = 10;
+let scoreboardTime = 20;
 let autoplay = true;
-let autoplayTime = 4;
+let autoplayTime = 3;
+let autoplayStartTime = 30;
 //---------
 
 let players = {};
@@ -56,6 +57,8 @@ let currentRound = 0;
 let timeRemaining = 0;
 let isGameRunning = false;
 let isRoundRunning = false;
+let playersOnline = 0;
+let autoplayStarting = false;
 
 io.on('connection', function(socket) {
     console.log('Socket ' + socket.id + ' connected!');
@@ -63,9 +66,14 @@ io.on('connection', function(socket) {
 
     socket.on('login', function(data){
         data.name = data.name.toString().trim();
-        if (data.name && teams.includes(data.team)) {
+        if (data.name && teams.includes(data.team) && !isGameRunning) {
             players[socket.id].name = data.name;
             players[socket.id].team = data.team;
+            playersOnline++;
+
+            if (autoplay) {
+                startAutoplayTimer();
+            }
 
             console.log('Socket ' + socket.id + ' logged in with name ' +  data.name + ' and team ' +  data.team);
             socket.emit('login_success', {name: data.name, team: data.team});
@@ -88,17 +96,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('start', function(){
-        for (let socketid in io.sockets.sockets) {
-            if (players[socketid].loggedIn) {
-                io.to(socketid).emit('start', true);
-            } else {
-                io.to(socketid).emit('start', false);
-            }
-        }
-
-        currentRound = 0;
-        isGameRunning = true;
-        nextQuestion();
+        startGame();
     });
 
     socket.on('next_question', function(){
@@ -108,6 +106,10 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function(){
         if (players[socket.id].loggedIn) {
             console.log('Socket ' + socket.id + ' (' + players[socket.id].name + ') disconnected!');
+            playersOnline--;
+            if (playersOnline < 1 && isGameRunning) {
+                stopGame();
+            }
         } else {
             console.log('Socket ' + socket.id + ' disconnected!');
         }
@@ -115,6 +117,51 @@ io.on('connection', function(socket) {
         delete players[socket.id];
     });
 });
+
+let autoplayCounterTimer = null;
+let autoplayTimer = 0;
+function startAutoplayTimer() {
+    if (!autoplayStarting) {
+        autoplayStarting = true;
+
+        setTimeout(startAutoplay, autoplayStartTime * 1000);
+        autoplayCounterTimer = setInterval(updateAutoplayCounter, 1000);
+        autoplayTimer = autoplayStartTime;
+    }
+}
+
+function updateAutoplayCounter() {
+    autoplayTimer--;
+    for (let socketid in players) {
+        if (players[socketid].loggedIn) {
+            io.to(socketid).emit('update_autoplay_timer', autoplayTimer);
+            io.to(socketid).emit('update_player_counter', playersOnline);
+        }
+    }
+}
+
+function startAutoplay() {
+    clearInterval(autoplayCounterTimer);
+    autoplayStarting = false;
+
+    if (playersOnline > 0) {
+        startGame();
+    }
+}
+
+function startGame() {
+    for (let socketid in io.sockets.sockets) {
+        if (players[socketid].loggedIn) {
+            io.to(socketid).emit('start', true);
+        } else {
+            io.to(socketid).emit('start', false);
+        }
+    }
+
+    currentRound = 0;
+    isGameRunning = true;
+    nextQuestion();
+}
 
 function nextQuestion() {
     for (let key in count) {
@@ -196,6 +243,10 @@ function showScoreboard() {
 }
 
 function stopGame() {
+    isRoundRunning = false;
+    isGameRunning = false;
+    currentRound = 0;
+
     io.emit('stop');
     io.emit('update_round', currentRound + '/' + rounds);
     prepareGame();
