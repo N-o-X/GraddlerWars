@@ -44,12 +44,16 @@ let teams = [
     'Red',
     'Blue'
 ];
+let categories = [
+    'Technik',
+    'Wissenschaft'
+];
 let rounds = 10;
 let defaultTime = 10;
 let scoreboardTime = 20;
 let autoplay = true;
 let autoplayTime = 3;
-let autoplayStartTime = 30;
+let autoplayStartTime = 15;
 //---------
 
 let players = {};
@@ -182,7 +186,12 @@ function nextQuestion() {
     timeRemaining = defaultTime;
     isRoundRunning = true;
 
-    connection.query('SELECT * FROM questions ORDER BY RAND() LIMIT 1', function (error, results, fields) {
+    let whereString = '';
+    for (let i = 0; i < categories.length; i++) {
+        whereString += (i === 0 ? ' ' : ' OR ') + 'category=' + '"' + categories[i] + '"';
+    }
+
+    connection.query('SELECT * FROM questions WHERE' + whereString + ' ORDER BY RAND() LIMIT 1', function (error, results, fields) {
         if (error) throw error;
 
         currentQuestionRow = results[0];
