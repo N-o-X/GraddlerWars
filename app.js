@@ -20,7 +20,11 @@ app.get('/', function(req, res){
 });
 
 app.get('/master', function(req, res){
-    res.sendFile(__dirname + '/web/master.html');
+    if (!autoplay) {
+        res.sendFile(__dirname + '/web/master.html');
+    } else {
+        res.sendFile(__dirname + '/web/index.html');
+    }
 });
 
 app.get('/view', function(req, res){
