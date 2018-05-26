@@ -127,6 +127,8 @@ $(function() {
         $('#game').css('display', 'none');
         $('#summary').css('display', 'table');
 
+        $('#scoreboard-title').attr('colspan', Object.keys(teams).length);
+
         $('#scoreboard-teams').empty();
         $('#scoreboard-players').empty();
 

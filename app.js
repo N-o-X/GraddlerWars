@@ -37,9 +37,8 @@ app.get('/js', function(req, res){
 
 //Config
 let teams = [
-  'Red',
-  'Blue',
-  'Audience'
+    'Red',
+    'Blue'
 ];
 let rounds = 10;
 let defaultTime = 10;
@@ -108,7 +107,7 @@ io.on('connection', function(socket) {
             console.log('Socket ' + socket.id + ' (' + players[socket.id].name + ') disconnected!');
             playersOnline--;
             if (playersOnline < 1 && isGameRunning) {
-                stopGame();
+                showScoreboardAndStopGame();
             }
         } else {
             console.log('Socket ' + socket.id + ' disconnected!');
@@ -172,7 +171,7 @@ function nextQuestion() {
     currentRound++;
 
     if (currentRound > rounds) {
-        showScoreboard();
+        showScoreboardAndStopGame();
         return;
     }
 
@@ -200,7 +199,7 @@ function nextQuestion() {
     });
 }
 
-function showScoreboard() {
+function showScoreboardAndStopGame() {
     isRoundRunning = false;
     isGameRunning = false;
     currentRound = 0;
@@ -243,10 +242,6 @@ function showScoreboard() {
 }
 
 function stopGame() {
-    isRoundRunning = false;
-    isGameRunning = false;
-    currentRound = 0;
-
     io.emit('stop');
     io.emit('update_round', currentRound + '/' + rounds);
     prepareGame();
