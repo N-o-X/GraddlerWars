@@ -10,7 +10,7 @@ npm start
 
 Now just navigate to `YOURIP:3000` and start playing.
 
-If you turned of `autoplay`, you can the start and control the game using `YOURIP:3000/master`
+If you turned of `autoplay`, you can start and control the game using `YOURIP:3000/master`
 
 ## Installation
 
