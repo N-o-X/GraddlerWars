@@ -6,13 +6,14 @@
   "dependencies": {
     "express": "^4.15.2",
     "npmlog": "^4.1.2",
-    "socket.io": "^1.7.3"
+    "socket.io": "^1.7.3",
+    "mysql": "^2.0.0"
   },
   "engines": {
     "node": ">=4.9"
   },
   "scripts": {
-    "start": "node --harmony_array_includes app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
