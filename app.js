@@ -13,9 +13,9 @@ let Player = require('./models/player.js');
 
 let mysql      = require('mysql');
 let connectionDetails = {
-    host     : 'localhost',
+    host     : 'mysql',
     user     : 'graddlerwars',
-    password : '',
+    password : 'password',
     database : 'graddlerwars',
     charset  : "LATIN1"
 };
