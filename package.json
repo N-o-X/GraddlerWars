@@ -2,19 +2,23 @@
   "name": "GraddlerWars",
   "version": "0.0.1",
   "description": "Open-source quiz app",
-  "license" : "GPL-3.0",
+  "license": "GPL-3.0",
   "dependencies": {
     "express": "^4.15.2",
+    "npmlog": "^4.1.2",
     "socket.io": "^1.7.3"
   },
-  "engines" : {
-    "node" : ">=4.9" 
+  "engines": {
+    "node": ">=4.9"
   },
   "scripts": {
     "start": "node --harmony_array_includes app.js"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/N-o-X/GraddlerWars"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/N-o-X/GraddlerWars"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
   }
 }

@@ -1,19 +1,24 @@
 "use strict";
 
+let log = require('npmlog');
+Object.defineProperty(log, 'heading', { get: () => { return '[' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') + ']' } });
+log.headingStyle = { bg: '', fg: 'white' };
+
 let app = require('express')();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 let port = process.env.PORT || 3000;
+
 let Player = require('./models/player.js');
 
 let mysql      = require('mysql');
-let connection = mysql.createConnection({
+let connectionDetails = {
     host     : 'localhost',
     user     : 'graddlerwars',
     password : '',
     database : 'graddlerwars',
     charset  : "LATIN1"
-});
+};
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/web/index.html');
@@ -45,15 +50,14 @@ let teams = [
     'Blue'
 ];
 let categories = [
-    'Technik',
-    'Wissenschaft'
+    '%'
 ];
 let rounds = 10;
 let defaultTime = 10;
 let scoreboardTime = 20;
 let autoplay = true;
 let autoplayTime = 3;
-let autoplayStartTime = 15;
+let autoplayStartTime = 30;
 //---------
 
 let players = {};
@@ -68,7 +72,7 @@ let playersOnline = 0;
 let autoplayStarting = false;
 
 io.on('connection', function(socket) {
-    console.log('Socket ' + socket.id + ' connected!');
+    log.info('Socket', 'Socket ' + socket.id + ' connected!');
     prepareClient(socket);
 
     socket.on('login', function(data){
@@ -78,12 +82,13 @@ io.on('connection', function(socket) {
             players[socket.id].team = data.team;
             playersOnline++;
 
+            log.info('Socket', 'Socket ' + socket.id + ' logged in with name ' +  data.name + ' and team ' +  data.team);
+            log.info('Players', playersOnline + ' players online!');
+            socket.emit('login_success', {name: data.name, team: data.team});
+
             if (autoplay) {
                 startAutoplayTimer();
             }
-
-            console.log('Socket ' + socket.id + ' logged in with name ' +  data.name + ' and team ' +  data.team);
-            socket.emit('login_success', {name: data.name, team: data.team});
         }
     });
 
@@ -97,8 +102,6 @@ io.on('connection', function(socket) {
                 players[socket.id].points++;
                 teamPoints[players[socket.id].team]++;
             }
-        } else if (players[socket.id].locked) {
-            console.log('Client ' + socket.id +  ' is locked or not logged in!');
         }
     });
 
@@ -112,13 +115,15 @@ io.on('connection', function(socket) {
 
     socket.on('disconnect', function(){
         if (players[socket.id].loggedIn) {
-            console.log('Socket ' + socket.id + ' (' + players[socket.id].name + ') disconnected!');
+            log.info('Socket', 'Socket ' + socket.id + ' (' + players[socket.id].name + ') disconnected!');
             playersOnline--;
             if (playersOnline < 1 && isGameRunning) {
+                log.info('Game', 'Ending the game, because all players left the game');
                 showScoreboardAndStopGame();
             }
+            log.info('Players', playersOnline + ' players online!');
         } else {
-            console.log('Socket ' + socket.id + ' disconnected!');
+            log.info('Socket', 'Socket ' + socket.id + ' disconnected!');
         }
 
         delete players[socket.id];
@@ -128,6 +133,7 @@ io.on('connection', function(socket) {
 let autoplayCounterTimer = null;
 let autoplayTimer = 0;
 function startAutoplayTimer() {
+    log.info('Autoplay', 'Starting autoplay countdown');
     if (!autoplayStarting) {
         autoplayStarting = true;
 
@@ -152,11 +158,15 @@ function startAutoplay() {
     autoplayStarting = false;
 
     if (playersOnline > 0) {
+        log.info('Autoplay', 'Autoplay started');
         startGame();
+    } else {
+        log.info('Autoplay', 'Didn\'t start autoplay, because all players left the game');
     }
 }
 
 function startGame() {
+    log.info('Game', 'Starting game');
     for (let socketid in io.sockets.sockets) {
         if (players[socketid].loggedIn) {
             io.to(socketid).emit('start', true);
@@ -171,6 +181,7 @@ function startGame() {
 }
 
 function nextQuestion() {
+    log.info('Game', 'Getting next question');
     for (let key in count) {
         count[key] = 0;
         io.emit('update_count', {letter: key, count: count[key]});
@@ -188,8 +199,10 @@ function nextQuestion() {
 
     let whereString = '';
     for (let i = 0; i < categories.length; i++) {
-        whereString += (i === 0 ? ' ' : ' OR ') + 'category=' + '"' + categories[i] + '"';
+        whereString += (i === 0 ? ' ' : ' OR ') + 'category like ' + '"' + categories[i] + '"';
     }
+
+    let connection = mysql.createConnection(connectionDetails);
 
     connection.query('SELECT * FROM questions WHERE' + whereString + ' ORDER BY RAND() LIMIT 1', function (error, results, fields) {
         if (error) throw error;
@@ -210,9 +223,14 @@ function nextQuestion() {
             players[socketid].locked = false;
         }
     });
+
+    connection.end();
+
+    log.info('Game', 'New round started');
 }
 
 function showScoreboardAndStopGame() {
+    log.info('Game', 'Showing scoreboard and stopping the game');
     isRoundRunning = false;
     isGameRunning = false;
     currentRound = 0;
@@ -258,9 +276,11 @@ function stopGame() {
     io.emit('stop');
     io.emit('update_round', currentRound + '/' + rounds);
     prepareGame();
+    log.info('Game', 'Game stopped');
 }
 
 function endRound() {
+    log.info('Game', 'Ending round');
     isRoundRunning = false;
     io.emit('update_correct', currentQuestionRow.correct_answer.toLowerCase());
     io.emit('update_count', {letter: 'a', count: count['a']});
@@ -274,6 +294,7 @@ function endRound() {
     }
 
     if (autoplay) {
+        log.info('Autoplay', 'Queueing next question in ' + autoplayTime + ' seconds');
         setTimeout(nextQuestion, autoplayTime * 1000);
     }
 }
@@ -287,13 +308,6 @@ function prepareGame() {
     timeRemaining = defaultTime;
     for (let teamIndex in teams) {
         teamPoints[teams[teamIndex]] = 0;
-    }
-
-    for (let socketid in players) {
-        let player = players[socketid];
-        player.name = null;
-        player.team = null;
-        player.points = 0;
     }
 }
 
@@ -333,5 +347,5 @@ setInterval(questionTimer, 1000);
 prepareGame();
 
 http.listen(port, function(){
-    console.log('listening on *:' + port);
+    log.info('Web', 'Server listening on *:' + port);
 });
