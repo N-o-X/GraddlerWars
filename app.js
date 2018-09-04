@@ -15,7 +15,7 @@ let mysql      = require('mysql');
 let connectionDetails = {
     host     : 'mysql',
     user     : 'graddlerwars',
-    password : 'password',
+    password : 'graddlerwars',
     database : 'graddlerwars',
     charset  : "LATIN1"
 };
