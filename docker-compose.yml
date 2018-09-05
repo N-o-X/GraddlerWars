@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql:
-    image: mysql
+    image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: graddlerwars
@@ -9,14 +9,28 @@ services:
       MYSQL_PASSWORD: graddlerwars
     volumes:
       - ./questions:/docker-entrypoint-initdb.d
+    networks:
+      - internal
     restart: always
   app:
     depends_on:
       - mysql
     build: .
     ports:
-      - "3000:3000"
+      - $EXTERNAL_PORT:3000
+    networks: 
+      - proxy
+      - internal
     restart: always
     labels:
-      - "traefik.frontend.rule=Host:graddlerwars.de"
+      - "traefik.frontend.rule=Host:$TRAEFIK_HOST"
       - "traefik.port=3000"
+      - "traefik.docker.network=proxy"
+    environment:
+      - TRAEFIK_HOST=localhost
+      - EXTERNAL_PORT=3000
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
