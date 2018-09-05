@@ -53,7 +53,7 @@ let categories = [
     '%'
 ];
 let rounds = 10;
-let defaultTime = 10;
+let defaultTime = 20;
 let scoreboardTime = 20;
 let autoplay = true;
 let autoplayTime = 3;
